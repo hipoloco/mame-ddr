@@ -129,6 +129,10 @@ endif
 ##################   END USER-CONFIGURABLE OPTIONS   ######################
 ###########################################################################
 
+ifdef SOURCES
+REGENIE ?= 1
+endif
+
 
 ifdef IS_DDRMINI
 PARAMS += --IS_DDRMINI='$(IS_DDRMINI)'
@@ -1625,7 +1629,7 @@ endif
 # Regression tests
 #-------------------------------------------------
 
-include regtests/regtests.mak
+-include regtests/regtests.mak
 
 .PHONY: tests
 
