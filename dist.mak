@@ -95,21 +95,38 @@ ifndef TARGET
   TARGET := mame
 endif
 
+# Optional switches for minimal release packaging.
+RELEASE_MINIMAL ?= 0
+SKIP_DOC_PDF ?= 0
+
 MAINBIN := $(TARGET)$(MAINBINVARIANT)
 BINDIR := build/$(PROJECTTYPE)/bin/$(BUILDARCH)/$(BUILDVARIANT)
 STAGEDIR := build/release/$(BUILDARCH)/$(BUILDVARIANT)/$(TARGET)
 
+ifeq ($(RELEASE_MINIMAL),1)
+BINARIES = $(MAINBIN)
+SIMPLE_DIRS := ctrlr docs/legal ini/examples ini/presets
+LOCALISATIONS :=
+COPIED_FILES := COPYING uismall.bdf roms/dir.txt $(foreach DIR,$(SIMPLE_DIRS),$(wildcard $(DIR)/*)) docs/man/LICENSE docs/man/README.md docs/man/mame.6
+CREATED_DIRS := docs ini roms $(SIMPLE_DIRS) docs/man
+else
 BINARIES = $(MAINBIN) castool chdman floptool imgtool jedutil ldresample ldverify nltool nlwav romcmp unidasm
 SIMPLE_DIRS := ctrlr docs/legal docs/man docs/swlist hash ini/examples ini/presets
 LOCALISATIONS := $(wildcard language/*/*.mo)
 COPIED_FILES := COPYING uismall.bdf roms/dir.txt $(foreach DIR,$(SIMPLE_DIRS),$(wildcard $(DIR)/*)) language/LICENSE language/README.md $(LOCALISATIONS)
 CREATED_DIRS := docs ini roms $(SIMPLE_DIRS) language $(dir $(LOCALISATIONS))
+endif
 
 GEN_FOLDERS := $(addprefix $(STAGEDIR)/,$(CREATED_DIRS))
 COPY_BINARIES := $(addprefix $(STAGEDIR)/,$(addsuffix $(EXE),$(BINARIES)))
 COPY_FILES := $(addprefix $(STAGEDIR)/,$(COPIED_FILES))
 
-all: $(COPY_BINARIES) $(COPY_FILES) $(STAGEDIR)/docs/MAME.pdf
+RELEASE_DOC_TARGET := $(STAGEDIR)/docs/MAME.pdf
+ifeq ($(SKIP_DOC_PDF),1)
+RELEASE_DOC_TARGET :=
+endif
+
+all: $(COPY_BINARIES) $(COPY_FILES) $(RELEASE_DOC_TARGET)
 
 clean:
 	$(SILENT) rm -rf $(STAGEDIR)
