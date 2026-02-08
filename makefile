@@ -1559,7 +1559,11 @@ clean: genieclean
 GEN_FOLDERS := $(GENDIR)/$(TARGET)/layout/ $(GENDIR)/$(TARGET)/$(SUBTARGET_FULL)/ $(GENDIR)/mame/drivers/ $(GENDIR)/mame/machine/
 
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
+ifdef SOURCES
+LAYOUTS=$(wildcard $(SRC)/$(TARGET)/layout/firebeat.lay $(SRC)/$(TARGET)/layout/pnchmn.lay)
+else
 LAYOUTS=$(wildcard $(SRC)/$(TARGET)/layout/*.lay)
+endif
 
 ifneq (,$(wildcard src/osd/$(OSD)/$(OSD).mak))
 include src/osd/$(OSD)/$(OSD).mak
