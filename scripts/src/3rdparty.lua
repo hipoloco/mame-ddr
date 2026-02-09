@@ -1274,6 +1274,8 @@ links {
 end
 end
 
+if _OPTIONS["NO_BGFX"]~="1" then
+
 
 --------------------------------------------------
 -- BX library objects
@@ -1685,6 +1687,8 @@ end
 			"-D BGFX_CONFIG_MULTITHREADED=0",
 		}
 	end
+
+end
 
 
 --------------------------------------------------

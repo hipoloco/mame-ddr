@@ -27,6 +27,7 @@ FORCE_REBUILD=1
 # OSD = sdl
 
 # NO_OPENGL = 0
+# NO_BGFX = 0
 # USE_DISPATCH_GL = 0
 # MODERN_WIN_API = 0
 # USE_SDL = 1
@@ -124,6 +125,11 @@ include $(PREFIX_MAKEFILE)
 else
 -include useroptions.mak
 endif
+
+# Default to the minimal driver set when SOURCES is not explicitly provided.
+SOURCES ?= konami/ksys573.cpp,konami/firebeat.cpp
+# Disable BGFX in this minimal build profile unless explicitly overridden.
+NO_BGFX ?= 1
 
 ###########################################################################
 ##################   END USER-CONFIGURABLE OPTIONS   ######################
@@ -783,6 +789,10 @@ endif
 
 ifdef NO_OPENGL
 PARAMS += --NO_OPENGL='$(NO_OPENGL)'
+endif
+
+ifdef NO_BGFX
+PARAMS += --NO_BGFX='$(NO_BGFX)'
 endif
 
 ifdef USE_DISPATCH_GL
