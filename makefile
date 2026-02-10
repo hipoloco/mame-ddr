@@ -130,6 +130,13 @@ endif
 SOURCES ?= konami/ksys573.cpp,konami/firebeat.cpp
 # Disable BGFX in this minimal build profile unless explicitly overridden.
 NO_BGFX ?= 1
+# Keep the minimal profile lean while preserving PortAudio.
+NO_OPENGL ?= 1
+NO_USE_MIDI ?= 1
+USE_QTDEBUG ?= 0
+USE_TAPTUN ?= 0
+USE_PCAP ?= 0
+FORCE_DRC_C_BACKEND ?= 1
 
 ###########################################################################
 ##################   END USER-CONFIGURABLE OPTIONS   ######################
